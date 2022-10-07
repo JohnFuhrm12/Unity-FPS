@@ -14,12 +14,18 @@ public class Aim : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        GameObject AKM = GameObject.Find("AKM");
+        LowerGun lowerGunScript = AKM.GetComponent<LowerGun>();
+
         if (Input.GetMouseButtonDown(1) && ADS == false) {
-            returnToDefault = false;
+           lowerGunScript.shiftDown = false;
+           lowerGunScript.returnAgain = false;
+           returnToDefault = false;
            aimStarted = true;
            ADS = true;
         }
         else if (Input.GetMouseButtonDown(1)) {
+           lowerGunScript.shiftDown = false;
            aimStarted = false;
            returnToDefault = true;
            ADS = false;

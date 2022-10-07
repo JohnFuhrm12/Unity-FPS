@@ -5,6 +5,7 @@ using UnityEngine;
 public class LowerGun : MonoBehaviour
 {
     public bool shiftDown = false;
+    public bool returnAgain = false;
 
     public float speedLower = 1;
     public Vector3 lowerTarget = new Vector3(0.135f, -0.379f, 0.522f);
@@ -18,22 +19,25 @@ public class LowerGun : MonoBehaviour
         GameObject AKM = GameObject.Find("AKM");
         Aim aimScript = AKM.GetComponent<Aim>();
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && aimScript.ADS == false)
         {
+            returnAgain = false;
             aimScript.returnToDefault = false;
             shiftDown = true;
         }
 
         if (shiftDown == true) {
+            returnAgain = false;
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, lowerTarget, speedLower * Time.deltaTime);
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift) && aimScript.ADS == false)
         {
             shiftDown = false;
+            returnAgain = true;
         }
 
-        if (shiftDown == false) {
+        if (returnAgain == true) {
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetDefaultReturn, speedLower * Time.deltaTime);
         }
     }
