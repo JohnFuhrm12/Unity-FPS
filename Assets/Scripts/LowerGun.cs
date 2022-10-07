@@ -23,6 +23,8 @@ public class LowerGun : MonoBehaviour
         {
             returnAgain = false;
             aimScript.returnToDefault = false;
+            aimScript.recoilStarted = false;
+            aimScript.recoilBack = false;
             shiftDown = true;
         }
 

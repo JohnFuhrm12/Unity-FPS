@@ -7,6 +7,10 @@ public class FireGun : MonoBehaviour
     public ParticleSystem MuzzleFlash;
     public ParticleSystem MuzzleFlashDefault;
 
+    public Vector3 recoilBeginPos = new Vector3(0.2069999f, -0.242f, 0.6549998f);   
+    public Vector3 recoilEndPos = new Vector3(0.5069999f, -0.242f, 0.6549998f);   
+    public float recoilSpeed;   
+
     void Update() {
         GameObject AKM = GameObject.Find("AKM");
         LowerGun lowerGunScript = AKM.GetComponent<LowerGun>();
@@ -23,11 +27,11 @@ public class FireGun : MonoBehaviour
     }
 
     void Fire() {
-        GameObject AKM = GameObject.Find("AKM");
-        Aim aimScript = AKM.GetComponent<Aim>();
-
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
+
+        GameObject AKM = GameObject.Find("AKM");
+        Aim aimScript = AKM.GetComponent<Aim>();
 
         if (Physics.Raycast(ray, out hit, 100)) {
             print("Hit something!");
@@ -37,6 +41,6 @@ public class FireGun : MonoBehaviour
         }
         if (aimScript.ADS == false) {
             MuzzleFlashDefault.Play();
-        }
+        }   
     }
 }
