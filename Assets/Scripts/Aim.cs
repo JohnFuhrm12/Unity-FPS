@@ -22,10 +22,15 @@ public class Aim : MonoBehaviour
     public Vector3 recoilDefault = new Vector3(0.2069999f, -0.242f, 0.4549998f);
     public Vector3 recoilADS = new Vector3(0.0034f, -0.235f, 0.04f);
 
+    public GameObject obj;
+
     // Update is called once per frame
     void Update() {
         GameObject AKM = GameObject.Find("AKM");
         LowerGun lowerGunScript = AKM.GetComponent<LowerGun>();
+
+        GameObject barrel = GameObject.Find("frontBarrel");
+        FireGun fireScript = barrel.GetComponent<FireGun>();
 
         if (Input.GetMouseButtonDown(1) && ADS == false) {
            lowerGunScript.shiftDown = false;
@@ -33,12 +38,14 @@ public class Aim : MonoBehaviour
            returnToDefault = false;
            aimStarted = true;
            ADS = true;
+           obj.SetActive(false);
         }
         else if (Input.GetMouseButtonDown(1)) {
            lowerGunScript.shiftDown = false;
            aimStarted = false;
            returnToDefault = true;
            ADS = false;
+           obj.SetActive(true);
         }
         if (aimStarted == true) {
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, speed * Time.deltaTime);
@@ -48,7 +55,7 @@ public class Aim : MonoBehaviour
         }
 
         // Handles Recoil When Not Aimed
-        if (Input.GetMouseButtonDown(0) && ADS == false && lowerGunScript.shiftDown == false) {
+        if (Input.GetMouseButtonDown(0) && ADS == false && lowerGunScript.shiftDown == false && fireScript.ammo > 0) {
             recoilStarted = true;
         }
         if (recoilStarted == true && ADS == false) {
@@ -68,7 +75,7 @@ public class Aim : MonoBehaviour
         }
 
         // Handles Recoil When Aiming Down Sights
-        if (Input.GetMouseButtonDown(0) && ADS == true && lowerGunScript.shiftDown == false) {
+        if (Input.GetMouseButtonDown(0) && ADS == true && lowerGunScript.shiftDown == false && fireScript.ammo > 0) {
             recoilStartedADS = true;
         }
         if (recoilStartedADS == true && ADS == true) {

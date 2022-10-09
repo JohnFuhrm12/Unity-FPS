@@ -8,9 +8,13 @@ public class Reload : MonoBehaviour
 
     void Update()
     {
+        GameObject barrel = GameObject.Find("frontBarrel");
+        FireGun fireScript = barrel.GetComponent<FireGun>();
+
         if (Input.GetKeyDown(KeyCode.R)) {
             GetComponent<Animator>().enabled = true;
             animatorController.SetTrigger("reloadWeapon");
+            fireScript.ammo = 30;
         }
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FireGun : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class FireGun : MonoBehaviour
     public Vector3 recoilEndPos = new Vector3(0.5069999f, -0.242f, 0.6549998f);   
     public float recoilSpeed;   
 
+    public int ammo;
+    public Text magCount;
+
     void Update() {
         GameObject AKM = GameObject.Find("AKM");
         LowerGun lowerGunScript = AKM.GetComponent<LowerGun>();
@@ -19,11 +23,14 @@ public class FireGun : MonoBehaviour
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
+        magCount.text = ammo.ToString();
+
         if (Physics.Raycast(ray, out hit, 100)) {
             Debug.DrawLine(ray.origin, hit.point);
         }
-        if (Input.GetMouseButtonDown(0) && lowerGunScript.shiftDown == false) {
+        if (Input.GetMouseButtonDown(0) && lowerGunScript.shiftDown == false && ammo > 0) {
             Fire();
+            ammo --;
         }
     }
 
