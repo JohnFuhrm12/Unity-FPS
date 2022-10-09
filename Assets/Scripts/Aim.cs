@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class Aim : MonoBehaviour
@@ -23,6 +24,9 @@ public class Aim : MonoBehaviour
     public Vector3 recoilADS = new Vector3(0.0034f, -0.235f, 0.04f);
 
     public GameObject obj;
+
+    float boolHoldDuration = 1; // seconds
+    Stopwatch stopWatch = new Stopwatch();
 
     // Update is called once per frame
     void Update() {
@@ -55,7 +59,7 @@ public class Aim : MonoBehaviour
         }
 
         // Handles Recoil When Not Aimed
-        if (Input.GetMouseButtonDown(0) && ADS == false && lowerGunScript.shiftDown == false && fireScript.ammo > 0) {
+        if (Input.GetMouseButtonDown(0) && ADS == false && lowerGunScript.shiftDown == false && fireScript.ammo > 0 && fireScript.canFire) {
             recoilStarted = true;
         }
         if (recoilStarted == true && ADS == false) {
@@ -75,7 +79,7 @@ public class Aim : MonoBehaviour
         }
 
         // Handles Recoil When Aiming Down Sights
-        if (Input.GetMouseButtonDown(0) && ADS == true && lowerGunScript.shiftDown == false && fireScript.ammo > 0) {
+        if (Input.GetMouseButtonDown(0) && ADS == true && lowerGunScript.shiftDown == false && fireScript.ammo > 0 && fireScript.canFire) {
             recoilStartedADS = true;
         }
         if (recoilStartedADS == true && ADS == true) {
@@ -92,6 +96,22 @@ public class Aim : MonoBehaviour
             aimStarted = false;
             recoilBackADS = false;
             recoilStartedADS = false;
+        }
+    }
+
+    void BugFix() {
+        if (recoilStartedADS) {
+            if (!stopWatch.IsRunning) {
+                stopWatch.Start();
+            }
+            else {
+                if (stopWatch.Elapsed.Seconds >= boolHoldDuration) {
+                    recoilStartedADS = false;
+                }
+            }
+        }
+        else {
+            stopWatch.Reset();
         }
     }
 }
